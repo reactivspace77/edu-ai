@@ -97,14 +97,14 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           return (
             <div 
               key={`date-${day}`}
-              className={`relative text-center p-2 rounded-md border cursor-pointer transition-colors ${
+              className={`relative text-center p-2 rounded-md border cursor-pointer transition-all duration-200 transform hover:scale-105 hover:shadow-lg ${
                 isCompleted 
-                  ? 'bg-green-50 border-green-200 hover:bg-green-100'
+                  ? 'bg-green-50 border-green-200 hover:bg-green-100 hover:border-green-300'
                   : isCurrentDay 
-                    ? 'border-indigo-600 bg-indigo-50 hover:bg-indigo-100'
+                    ? 'border-indigo-600 bg-indigo-50 hover:bg-indigo-100 hover:border-indigo-700'
                     : lesson
-                      ? 'border-gray-300 hover:bg-gray-50'
-                      : 'border-gray-200 bg-gray-50 cursor-default'
+                      ? 'border-gray-300 hover:bg-gray-50 hover:border-gray-400 hover:shadow-md'
+                      : 'border-gray-200 bg-gray-50 cursor-default opacity-60'
               }`}
               onClick={() => {
                 if (lesson) {

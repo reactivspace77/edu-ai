@@ -64,12 +64,12 @@ const ChallengesList: React.FC = () => {
               {dailyChallenges.map((challenge) => (
                 <div 
                   key={challenge.id} 
-                  className="border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                  className="border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg hover:border-gray-300"
                   onClick={() => handleChallengeClick(challenge.id)}
                 >
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
-                      <div className={`p-1.5 rounded-full ${
+                      <div className={`p-1.5 rounded-full transition-all duration-200 ${
                         challenge.current >= challenge.target 
                           ? 'bg-green-100' 
                           : 'bg-amber-100'

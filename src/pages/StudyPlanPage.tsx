@@ -137,14 +137,15 @@ const StudyPlanPage: React.FC = () => {
                       return (
                         <div 
                           key={lesson.id} 
-                          className={`flex items-center justify-between p-3 border rounded-lg transition-colors ${
+                          className={`flex items-center justify-between p-3 border rounded-lg transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg cursor-pointer ${
                             isCompleted 
-                              ? 'bg-green-50 border-green-200 hover:bg-green-100' 
-                              : 'border-gray-200 hover:bg-gray-50'
+                              ? 'bg-green-50 border-green-200 hover:bg-green-100 hover:border-green-300' 
+                              : 'border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                           }`}
+                          onClick={() => navigate(`/lessons/${lesson.id}`)}
                         >
                           <div className="flex items-center">
-                            <div className={`p-1.5 rounded-full ${
+                            <div className={`p-1.5 rounded-full transition-all duration-200 ${
                               isCompleted ? 'bg-green-100' : 'bg-indigo-100'
                             }`}>
                               {isCompleted ? (
@@ -155,18 +156,17 @@ const StudyPlanPage: React.FC = () => {
                                 }`} />
                               )}
                             </div>
-                            <span className={`ml-2 text-sm font-medium ${
+                            <span className={`ml-2 text-sm font-medium transition-colors duration-200 ${
                               isCompleted ? 'text-green-700' : 'text-gray-800'
                             }`}>
                               {lesson.title}
                             </span>
                           </div>
                           <button
-                            onClick={() => navigate(`/lessons/${lesson.id}`)}
-                            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-200 transform hover:scale-105 ${
                               isCompleted
-                                ? 'text-green-700 bg-green-100 hover:bg-green-200'
-                                : 'text-white bg-indigo-600 hover:bg-indigo-700'
+                                ? 'text-green-700 bg-green-100 hover:bg-green-200 hover:shadow-md'
+                                : 'text-white bg-indigo-600 hover:bg-indigo-700 hover:shadow-md'
                             }`}
                           >
                             {isCompleted ? 'Recapitulare' : 'Deschide'}
