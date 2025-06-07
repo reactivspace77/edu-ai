@@ -20,10 +20,12 @@ const ChallengesList: React.FC = () => {
   };
 
   const handleChallengeComplete = async (challengeId: string, score: number) => {
+    if (!user) return;
+    
     const challenge = dailyChallenges.find(c => c.id === challengeId);
     if (challenge) {
       const newProgress = Math.min(challenge.current + score, challenge.target);
-      await updateChallenge(challengeId, newProgress);
+      await updateChallenge(challengeId, newProgress, user.id);
     }
     setSelectedChallenge(null);
   };
