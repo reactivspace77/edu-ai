@@ -55,7 +55,7 @@ const DashboardPage: React.FC = () => {
   return (
     <>
       <Navbar />
-      <main className="bg-gray-100 min-h-screen pb-8">
+      <main className="bg-gray-100 min-h-screen pb-8 pt-16"> {/* Added pt-16 to account for fixed navbar */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">
