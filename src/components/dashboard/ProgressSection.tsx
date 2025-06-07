@@ -1,5 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Trophy, ChevronRight } from 'lucide-react';
+import { 
+  Trophy, 
+  ChevronRight, 
+  BookOpen, 
+  Zap, 
+  Search, 
+  GraduationCap, 
+  Calculator, 
+  Star, 
+  Crown, 
+  Award,
+  Flame,
+  Sunrise,
+  Moon,
+  Calendar,
+  CheckCircle
+} from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 import useGamificationStore from '../../store/gamificationStore';
 import { Badge } from '../../types';
@@ -22,6 +38,113 @@ const ProgressSection: React.FC = () => {
       setRecentBadges(earned);
     }
   }, [badges, earnedBadges]);
+
+  // Badge configuration with colors and icons
+  const badgeConfig: Record<string, { icon: React.ComponentType<any>, color: string, bgColor: string }> = {
+    'first-lesson': { 
+      icon: BookOpen, 
+      color: 'text-blue-600', 
+      bgColor: 'bg-blue-100' 
+    },
+    'quick-learner': { 
+      icon: Zap, 
+      color: 'text-yellow-600', 
+      bgColor: 'bg-yellow-100' 
+    },
+    'knowledge-seeker': { 
+      icon: Search, 
+      color: 'text-purple-600', 
+      bgColor: 'bg-purple-100' 
+    },
+    'master-student': { 
+      icon: GraduationCap, 
+      color: 'text-indigo-600', 
+      bgColor: 'bg-indigo-100' 
+    },
+    'math-novice': { 
+      icon: Calculator, 
+      color: 'text-green-600', 
+      bgColor: 'bg-green-100' 
+    },
+    'math-enthusiast': { 
+      icon: Calculator, 
+      color: 'text-emerald-600', 
+      bgColor: 'bg-emerald-100' 
+    },
+    'math-expert': { 
+      icon: Calculator, 
+      color: 'text-teal-600', 
+      bgColor: 'bg-teal-100' 
+    },
+    'perfect-score': { 
+      icon: Star, 
+      color: 'text-amber-600', 
+      bgColor: 'bg-amber-100' 
+    },
+    'quiz-master': { 
+      icon: Crown, 
+      color: 'text-orange-600', 
+      bgColor: 'bg-orange-100' 
+    },
+    'level-5': { 
+      icon: Award, 
+      color: 'text-cyan-600', 
+      bgColor: 'bg-cyan-100' 
+    },
+    'level-10': { 
+      icon: Award, 
+      color: 'text-blue-600', 
+      bgColor: 'bg-blue-100' 
+    },
+    'level-20': { 
+      icon: Trophy, 
+      color: 'text-violet-600', 
+      bgColor: 'bg-violet-100' 
+    },
+    'daily-streak-3': { 
+      icon: Flame, 
+      color: 'text-red-600', 
+      bgColor: 'bg-red-100' 
+    },
+    'daily-streak-7': { 
+      icon: Flame, 
+      color: 'text-orange-600', 
+      bgColor: 'bg-orange-100' 
+    },
+    'daily-streak-30': { 
+      icon: Flame, 
+      color: 'text-rose-600', 
+      bgColor: 'bg-rose-100' 
+    },
+    'early-bird': { 
+      icon: Sunrise, 
+      color: 'text-yellow-600', 
+      bgColor: 'bg-yellow-100' 
+    },
+    'night-owl': { 
+      icon: Moon, 
+      color: 'text-slate-600', 
+      bgColor: 'bg-slate-100' 
+    },
+    'weekend-warrior': { 
+      icon: Calendar, 
+      color: 'text-pink-600', 
+      bgColor: 'bg-pink-100' 
+    },
+    'full-attendance': { 
+      icon: CheckCircle, 
+      color: 'text-lime-600', 
+      bgColor: 'bg-lime-100' 
+    }
+  };
+
+  const getBadgeConfig = (badgeId: string) => {
+    return badgeConfig[badgeId] || { 
+      icon: Trophy, 
+      color: 'text-gray-600', 
+      bgColor: 'bg-gray-100' 
+    };
+  };
 
   const calculateNextLevelExp = () => {
     if (!user) return 100;
@@ -71,14 +194,19 @@ const ProgressSection: React.FC = () => {
 
           {recentBadges.length > 0 ? (
             <div className="grid grid-cols-4 gap-4">
-              {recentBadges.map((badge) => (
-                <div key={badge.id} className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-1">
-                    <Trophy className="h-6 w-6 text-indigo-600" />
+              {recentBadges.map((badge) => {
+                const config = getBadgeConfig(badge.id);
+                const IconComponent = config.icon;
+                
+                return (
+                  <div key={badge.id} className="flex flex-col items-center">
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-1 ${config.bgColor}`}>
+                      <IconComponent className={`h-6 w-6 ${config.color}`} />
+                    </div>
+                    <span className="text-xs text-center text-gray-600">{badge.name}</span>
                   </div>
-                  <span className="text-xs text-center text-gray-600">{badge.name}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="text-sm text-gray-500 text-center py-4 border-2 border-dashed border-gray-200 rounded-lg">
