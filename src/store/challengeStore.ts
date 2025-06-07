@@ -7,7 +7,7 @@ interface ChallengeState {
   loading: boolean;
   error: string | null;
   fetchChallenges: (userId: string) => Promise<void>;
-  updateChallenge: (challengeId: string, progress: number) => Promise<void>;
+  updateChallenge: (challengeId: string, progress: number, userId: string) => Promise<void>;
 }
 
 const useChallengeStore = create<ChallengeState>((set, get) => ({
@@ -52,7 +52,7 @@ const useChallengeStore = create<ChallengeState>((set, get) => ({
     }
   },
 
-  updateChallenge: async (challengeId: string, progress: number) => {
+  updateChallenge: async (challengeId: string, progress: number, userId: string) => {
     try {
       set({ loading: true, error: null });
       const { dailyChallenges } = get();
@@ -66,10 +66,14 @@ const useChallengeStore = create<ChallengeState>((set, get) => ({
       
       set({ dailyChallenges: updatedChallenges });
 
-      // Update in database
+      // Update in database - include userId to satisfy RLS policy
       const { error } = await supabase
         .from('challenge_progress')
-        .upsert([{ challengeId, current: progress }]);
+        .upsert([{ 
+          challengeId, 
+          userId, 
+          current: progress 
+        }]);
       
       if (error) {
         throw error;
