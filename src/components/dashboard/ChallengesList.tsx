@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Trophy, CheckCircle, X, Calculator, BookOpen } from 'lucide-react';
+import { Trophy, CheckCircle, X, Calculator, BookOpen, FileText, Shapes } from 'lucide-react';
 import useChallengeStore from '../../store/challengeStore';
 import useAuthStore from '../../store/authStore';
 import ChallengeModal from './ChallengeModal';
@@ -22,12 +22,22 @@ const ChallengesList: React.FC = () => {
   const handleChallengeComplete = async (challengeId: string, score: number) => {
     if (!user) return;
     
-    const challenge = dailyChallenges.find(c => c.id === challengeId);
-    if (challenge) {
-      // Use the actual score from the modal instead of adding to current progress
-      await updateChallenge(challengeId, score, user.id);
-    }
+    // Update challenge progress with the actual score achieved
+    await updateChallenge(challengeId, score, user.id);
     setSelectedChallenge(null);
+  };
+
+  const getChallengeIcon = (challengeId: string) => {
+    switch(challengeId) {
+      case 'romana-analiza-epic':
+        return <BookOpen className="h-5 w-5 text-amber-600" />;
+      case 'mate-geometrie-arii':
+        return <Shapes className="h-5 w-5 text-amber-600" />;
+      case 'romana-morfologie':
+        return <FileText className="h-5 w-5 text-amber-600" />;
+      default:
+        return <Calculator className="h-5 w-5 text-amber-600" />;
+    }
   };
 
   if (loading) {
@@ -35,6 +45,7 @@ const ChallengesList: React.FC = () => {
       <div className="bg-white rounded-lg shadow-md p-6 animate-pulse">
         <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
         <div className="space-y-4">
+          <div className="h-16 bg-gray-200 rounded"></div>
           <div className="h-16 bg-gray-200 rounded"></div>
           <div className="h-16 bg-gray-200 rounded"></div>
         </div>
@@ -65,10 +76,8 @@ const ChallengesList: React.FC = () => {
                       }`}>
                         {challenge.current >= challenge.target ? (
                           <CheckCircle className="h-5 w-5 text-green-600" />
-                        ) : challenge.id === '123e4567-e89b-12d3-a456-426614174006' ? (
-                          <Calculator className="h-5 w-5 text-amber-600" />
                         ) : (
-                          <BookOpen className="h-5 w-5 text-amber-600" />
+                          getChallengeIcon(challenge.id)
                         )}
                       </div>
                     </div>

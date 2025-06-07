@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Calculator, BookOpen, CheckCircle, XCircle } from 'lucide-react';
+import { X, Calculator, BookOpen, CheckCircle, XCircle, FileText, Shapes } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Question {
@@ -24,76 +24,111 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({ challengeId, onComplete
 
   useEffect(() => {
     // Generate questions based on challenge type
-    if (challengeId === '123e4567-e89b-12d3-a456-426614174006') {
-      // Math equations challenge
-      setQuestions([
+    let challengeQuestions: Question[] = [];
+    
+    if (challengeId === 'romana-analiza-epic') {
+      challengeQuestions = [
         {
           id: '1',
-          question: 'Rezolvă ecuația: 2x + 6 = 14',
-          options: ['x = 4', 'x = 6', 'x = 8', 'x = 10'],
+          question: 'Care este elementul principal al textului epic?',
+          options: ['Acțiunea', 'Sentimentele', 'Dialogul', 'Descrierea'],
           correctAnswer: 0
         },
         {
           id: '2',
-          question: 'Rezolvă ecuația: 3x - 9 = 0',
-          options: ['x = 2', 'x = 3', 'x = 4', 'x = 5'],
-          correctAnswer: 1
+          question: 'Cine este protagonistul într-un text epic?',
+          options: ['Autorul', 'Cititorul', 'Personajul principal', 'Naratorul'],
+          correctAnswer: 2
         },
         {
           id: '3',
-          question: 'Rezolvă ecuația: 5x + 10 = 25',
-          options: ['x = 2', 'x = 3', 'x = 4', 'x = 5'],
+          question: 'Ce reprezintă conflictul într-un text epic?',
+          options: ['Dialogul dintre personaje', 'Lupta dintre forțe opuse', 'Descrierea peisajului', 'Monologul interior'],
           correctAnswer: 1
         },
         {
           id: '4',
-          question: 'Rezolvă ecuația: 4x - 8 = 16',
-          options: ['x = 4', 'x = 5', 'x = 6', 'x = 7'],
-          correctAnswer: 2
+          question: 'Care sunt momentele subiectului epic?',
+          options: ['Început, mijloc, sfârșit', 'Expozițiune, intrigă, deznodământ', 'Cauză, efect, concluzie', 'Introducere, dezvoltare, încheiere'],
+          correctAnswer: 1
         },
         {
           id: '5',
-          question: 'Rezolvă ecuația: 6x + 12 = 30',
-          options: ['x = 2', 'x = 3', 'x = 4', 'x = 5'],
+          question: 'Ce rol are naratorul în textul epic?',
+          options: ['Participă la acțiune', 'Relatează întâmplările', 'Exprimă sentimente', 'Descrie peisajul'],
           correctAnswer: 1
         }
-      ]);
-    } else {
-      // Literary figures challenge
-      setQuestions([
+      ];
+    } else if (challengeId === 'mate-geometrie-arii') {
+      challengeQuestions = [
         {
           id: '1',
-          question: 'Identifică figura de stil din: "Vântul șoptește prin frunze"',
-          options: ['Metaforă', 'Personificare', 'Comparație', 'Epitet'],
+          question: 'Care este formula pentru aria unui dreptunghi?',
+          options: ['l × L', 'l + L', '2(l + L)', 'l² + L²'],
+          correctAnswer: 0
+        },
+        {
+          id: '2',
+          question: 'Care este formula pentru aria unui triunghi?',
+          options: ['b × h', '(b × h) / 2', 'b + h', '2 × b × h'],
+          correctAnswer: 1
+        },
+        {
+          id: '3',
+          question: 'Care este perimetrul unui pătrat cu latura de 5 cm?',
+          options: ['10 cm', '15 cm', '20 cm', '25 cm'],
+          correctAnswer: 2
+        },
+        {
+          id: '4',
+          question: 'Care este aria unui cerc cu raza de 3 cm? (π ≈ 3,14)',
+          options: ['18,84 cm²', '28,26 cm²', '9,42 cm²', '6,28 cm²'],
+          correctAnswer: 1
+        },
+        {
+          id: '5',
+          question: 'Un dreptunghi are lungimea de 8 cm și lățimea de 5 cm. Care este perimetrul?',
+          options: ['13 cm', '26 cm', '40 cm', '21 cm'],
+          correctAnswer: 1
+        }
+      ];
+    } else if (challengeId === 'romana-morfologie') {
+      challengeQuestions = [
+        {
+          id: '1',
+          question: 'Care dintre următoarele este o parte de vorbire flexibilă?',
+          options: ['Adverbul', 'Substantivul', 'Prepoziția', 'Conjuncția'],
           correctAnswer: 1
         },
         {
           id: '2',
-          question: 'Ce figură de stil este în: "Ochii săi erau două stele"?',
-          options: ['Personificare', 'Metaforă', 'Hiperbola', 'Comparație'],
+          question: 'Ce exprimă verbul în propoziție?',
+          options: ['O însușire', 'O acțiune sau o stare', 'O relație', 'O circumstanță'],
           correctAnswer: 1
         },
         {
           id: '3',
-          question: 'Identifică figura de stil: "Alb ca zăpada"',
-          options: ['Metaforă', 'Personificare', 'Comparație', 'Epitet'],
-          correctAnswer: 2
+          question: 'Care este rolul adjectivului în propoziție?',
+          options: ['Exprimă acțiunea', 'Determină substantivul', 'Leagă cuvintele', 'Exprimă circumstanțe'],
+          correctAnswer: 1
         },
         {
           id: '4',
-          question: 'Ce figură de stil este în: "Frumoasa ca o floare"?',
-          options: ['Comparație', 'Metaforă', 'Personificare', 'Hiperbola'],
-          correctAnswer: 0
+          question: 'Ce parte de vorbire este cuvântul "frumos" în propoziția "Copilul este frumos"?',
+          options: ['Substantiv', 'Verb', 'Adjectiv', 'Adverb'],
+          correctAnswer: 2
         },
         {
           id: '5',
-          question: 'Identifică figura de stil: "Marea urlă furioasă"',
-          options: ['Metaforă', 'Personificare', 'Comparație', 'Epitet'],
-          correctAnswer: 1
+          question: 'Care dintre următoarele este o parte de vorbire neflexibilă?',
+          options: ['Pronumele', 'Numeralul', 'Adverbul', 'Articolul'],
+          correctAnswer: 2
         }
-      ]);
+      ];
     }
-    setAnswers(new Array(5).fill(-1));
+    
+    setQuestions(challengeQuestions);
+    setAnswers(new Array(challengeQuestions.length).fill(-1));
   }, [challengeId]);
 
   const handleAnswerSelect = (answerIndex: number) => {
@@ -125,15 +160,29 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({ challengeId, onComplete
   };
 
   const getChallengeTitle = () => {
-    return challengeId === '123e4567-e89b-12d3-a456-426614174006' 
-      ? 'Rezolvă 5 ecuații azi' 
-      : 'Identifică figurile de stil';
+    switch(challengeId) {
+      case 'romana-analiza-epic':
+        return 'Analiza textului epic';
+      case 'mate-geometrie-arii':
+        return 'Geometrie - Arii și Perimetri';
+      case 'romana-morfologie':
+        return 'Morfologie - Părțile de vorbire';
+      default:
+        return 'Provocare';
+    }
   };
 
   const getChallengeIcon = () => {
-    return challengeId === '123e4567-e89b-12d3-a456-426614174006' 
-      ? <Calculator className="h-6 w-6 text-indigo-600" />
-      : <BookOpen className="h-6 w-6 text-indigo-600" />;
+    switch(challengeId) {
+      case 'romana-analiza-epic':
+        return <BookOpen className="h-6 w-6 text-indigo-600" />;
+      case 'mate-geometrie-arii':
+        return <Shapes className="h-6 w-6 text-indigo-600" />;
+      case 'romana-morfologie':
+        return <FileText className="h-6 w-6 text-indigo-600" />;
+      default:
+        return <Calculator className="h-6 w-6 text-indigo-600" />;
+    }
   };
 
   if (questions.length === 0) return null;
