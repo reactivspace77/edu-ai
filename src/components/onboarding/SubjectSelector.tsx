@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check } from 'lucide-react';
+import { Check, Calculator, BookOpen, Atom, FlaskConical, Dna, Monitor, Globe, Clock, Brain, Lightbulb, TrendingUp, Users, Heart } from 'lucide-react';
 
 interface SubjectSelectorProps {
   selectedSubjects: string[];
@@ -9,6 +9,25 @@ interface SubjectSelectorProps {
 }
 
 const SubjectSelector: React.FC<SubjectSelectorProps> = ({ selectedSubjects, onToggle, examType }) => {
+  const getSubjectConfig = (subjectId: string, name: string) => {
+    const configs: { [key: string]: { icon: React.ComponentType<any>; color: string; bgColor: string } } = {
+      matematica: { icon: Calculator, color: 'text-blue-600', bgColor: 'bg-blue-100' },
+      romana: { icon: BookOpen, color: 'text-emerald-600', bgColor: 'bg-emerald-100' },
+      fizica: { icon: Atom, color: 'text-purple-600', bgColor: 'bg-purple-100' },
+      chimie: { icon: FlaskConical, color: 'text-orange-600', bgColor: 'bg-orange-100' },
+      biologie: { icon: Dna, color: 'text-green-600', bgColor: 'bg-green-100' },
+      informatica: { icon: Monitor, color: 'text-slate-600', bgColor: 'bg-slate-100' },
+      geografie: { icon: Globe, color: 'text-teal-600', bgColor: 'bg-teal-100' },
+      istorie: { icon: Clock, color: 'text-amber-600', bgColor: 'bg-amber-100' },
+      logica: { icon: Brain, color: 'text-indigo-600', bgColor: 'bg-indigo-100' },
+      filosofie: { icon: Lightbulb, color: 'text-yellow-600', bgColor: 'bg-yellow-100' },
+      economie: { icon: TrendingUp, color: 'text-cyan-600', bgColor: 'bg-cyan-100' },
+      sociologie: { icon: Users, color: 'text-pink-600', bgColor: 'bg-pink-100' },
+      psihologie: { icon: Heart, color: 'text-rose-600', bgColor: 'bg-rose-100' }
+    };
+    return configs[subjectId] || { icon: BookOpen, color: 'text-gray-600', bgColor: 'bg-gray-100' };
+  };
+
   const getSubjects = () => {
     if (examType === 'evaluareNationala') {
       return [
@@ -61,32 +80,59 @@ const SubjectSelector: React.FC<SubjectSelectorProps> = ({ selectedSubjects, onT
           : 'Selectează materiile obligatorii și materiile de profil pentru Bacalaureat.'}
       </p>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {subjects.map((subject) => (
-          <div 
-            key={subject.id}
-            className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all
-              ${selectedSubjects.includes(subject.id)
-                ? 'bg-indigo-50 border-indigo-600'
-                : 'bg-white border-gray-200 hover:border-gray-300'
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto pr-2">
+        {subjects.map((subject) => {
+          const config = getSubjectConfig(subject.id, subject.name);
+          const IconComponent = config.icon;
+          const isSelected = selectedSubjects.includes(subject.id);
+          
+          return (
+            <div 
+              key={subject.id}
+              className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 transform hover:scale-105 hover:shadow-lg ${
+                isSelected
+                  ? `${config.bgColor} border-current shadow-md`
+                  : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
               }`}
-            onClick={() => onToggle(subject.id)}
-          >
-            <div className="flex items-center">
-              {selectedSubjects.includes(subject.id) && (
-                <div className="absolute top-2 right-2">
-                  <div className="bg-indigo-600 rounded-full p-1">
-                    <Check className="h-3 w-3 text-white" />
+              onClick={() => onToggle(subject.id)}
+            >
+              <div className="flex items-center">
+                {isSelected && (
+                  <div className="absolute top-2 right-2">
+                    <div className={`rounded-full p-1 ${
+                      subject.id === 'matematica' ? 'bg-blue-600' :
+                      subject.id === 'romana' ? 'bg-emerald-600' :
+                      subject.id === 'fizica' ? 'bg-purple-600' :
+                      subject.id === 'chimie' ? 'bg-orange-600' :
+                      subject.id === 'biologie' ? 'bg-green-600' :
+                      subject.id === 'informatica' ? 'bg-slate-600' :
+                      subject.id === 'geografie' ? 'bg-teal-600' :
+                      subject.id === 'istorie' ? 'bg-amber-600' :
+                      subject.id === 'logica' ? 'bg-indigo-600' :
+                      subject.id === 'filosofie' ? 'bg-yellow-600' :
+                      subject.id === 'economie' ? 'bg-cyan-600' :
+                      subject.id === 'sociologie' ? 'bg-pink-600' :
+                      subject.id === 'psihologie' ? 'bg-rose-600' :
+                      'bg-gray-600'
+                    }`}>
+                      <Check className="h-3 w-3 text-white" />
+                    </div>
                   </div>
+                )}
+                
+                <div className={`p-2 rounded-full mr-3 ${
+                  isSelected ? 'bg-white shadow-sm' : config.bgColor
+                }`}>
+                  <IconComponent className={`h-5 w-5 ${config.color}`} />
                 </div>
-              )}
-              
-              <div className="ml-2">
-                <h4 className="text-sm font-medium text-gray-900">{subject.name}</h4>
+                
+                <div>
+                  <h4 className="text-sm font-medium text-gray-900">{subject.name}</h4>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {examType === 'evaluareNationala' && selectedSubjects.length === 0 && (
