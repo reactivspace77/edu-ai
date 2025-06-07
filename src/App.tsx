@@ -12,7 +12,7 @@ import supabase from './config/supabase';
 import ElevenLabsWidget from './components/chat/ElevenLabsWidget';
 
 const App: React.FC = () => {
-  const { user, isAuthenticated, loading, loadUserProfile } = useAuthStore();
+  const { user, isAuthenticated, loading, loadUserProfile, clearAuth } = useAuthStore();
   const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
@@ -21,16 +21,26 @@ const App: React.FC = () => {
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
+          // Handle specific session errors by clearing invalid sessions
+          if (error.message?.includes('session_not_found') || error.message?.includes('JWT')) {
+            await supabase.auth.signOut();
+            clearAuth();
+          }
           throw error;
         }
 
         if (session?.user) {
           await loadUserProfile(session.user);
+        } else {
+          // Explicitly clear auth state if no session user
+          clearAuth();
         }
         
         setAppReady(true);
       } catch (error) {
         console.error('Auth check error:', error);
+        // Ensure auth state is cleared on any error
+        clearAuth();
         setAppReady(true);
       }
     };
@@ -38,7 +48,9 @@ const App: React.FC = () => {
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
+      if (event === 'SIGNED_OUT' || !session?.user) {
+        clearAuth();
+      } else if (session?.user) {
         await loadUserProfile(session.user);
       }
     });
@@ -46,7 +58,7 @@ const App: React.FC = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [loadUserProfile]);
+  }, [loadUserProfile, clearAuth]);
 
   const isOnboardingComplete = () => {
     if (!user) return false;

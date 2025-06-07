@@ -14,6 +14,7 @@ interface AuthState {
   signOut: () => Promise<void>;
   updateUser: (userData: Partial<User>) => Promise<void>;
   loadUserProfile: (authUser: AuthUser) => Promise<void>;
+  clearAuth: () => void;
 }
 
 const useAuthStore = create<AuthState>((set, get) => ({
@@ -21,6 +22,15 @@ const useAuthStore = create<AuthState>((set, get) => ({
   loading: false,
   error: null,
   isAuthenticated: false,
+
+  clearAuth: () => {
+    set({
+      user: null,
+      isAuthenticated: false,
+      loading: false,
+      error: null,
+    });
+  },
 
   loadUserProfile: async (authUser: AuthUser) => {
     try {
@@ -133,7 +143,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
   signOut: async () => {
     try {
       await supabase.auth.signOut();
-      set({ user: null, isAuthenticated: false });
+      get().clearAuth();
     } catch (error: any) {
       set({ error: error.message });
     }
