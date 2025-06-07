@@ -24,8 +24,8 @@ const ChallengesList: React.FC = () => {
     
     const challenge = dailyChallenges.find(c => c.id === challengeId);
     if (challenge) {
-      const newProgress = Math.min(challenge.current + score, challenge.target);
-      await updateChallenge(challengeId, newProgress, user.id);
+      // Use the actual score from the modal instead of adding to current progress
+      await updateChallenge(challengeId, score, user.id);
     }
     setSelectedChallenge(null);
   };
